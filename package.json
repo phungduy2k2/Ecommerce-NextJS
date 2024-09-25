@@ -9,9 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.8",
+    "@stripe/stripe-js": "^4.4.0",
+    "bcryptjs": "^2.4.3",
+    "firebase": "^10.13.2",
+    "joi": "^17.13.3",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.2",
+    "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.11"
+    "react-spinners": "^0.14.1",
+    "react-toastify": "^10.0.5",
+    "stripe": "^16.11.0"
   },
   "devDependencies": {
     "postcss": "^8",

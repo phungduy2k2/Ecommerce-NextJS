@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import AuthUser from "@/middleware/AuthUser";
 import Product from "@/models/product";
 import { NextResponse } from "next/server";
 
@@ -8,26 +9,13 @@ export async function PUT(req) {
   try {
     await connectToDB();
 
-    const extractData = await req.json();
+    const isAuthUser = await AuthUser();
 
-    const {
-      _id,
-      name,
-      price,
-      description,
-      category,
-      sizes,
-      deliveryInfo,
-      onSale,
-      priceDrop,
-      imageUrl,
-    } = extractData;
+    if(isAuthUser?.role === "admin") {
+      const extractData = await req.json();
 
-    const updatedProduct = await Product.findOneAndUpdate(
-      {
-        _id: _id,
-      },
-      {
+      const {
+        _id,
         name,
         price,
         description,
@@ -37,21 +25,43 @@ export async function PUT(req) {
         onSale,
         priceDrop,
         imageUrl,
-      },
-      { new: true }
-    );
-
-    if (updatedProduct) {
-      return NextResponse.json({
-        success: true,
-        message: "Product updated successfully!",
-      });
+      } = extractData;
+  
+      const updatedProduct = await Product.findOneAndUpdate(
+        {
+          _id: _id,
+        },
+        {
+          name,
+          price,
+          description,
+          category,
+          sizes,
+          deliveryInfo,
+          onSale,
+          priceDrop,
+          imageUrl,
+        },
+        { new: true }
+      );
+  
+      if (updatedProduct) {
+        return NextResponse.json({
+          success: true,
+          message: "Product updated successfully!",
+        });
+      } else {
+        return NextResponse.json({
+          success: false,
+          message: "Failed to update the product ! Please try again later",
+        });
+      }
     } else {
       return NextResponse.json({
         success: false,
-        message: "Failed to update the product ! Please try again later",
+        message: "You are not authenticated",
       });
-    }
+    }    
   } catch (error) {
     console.log(error);
     return NextResponse.json({

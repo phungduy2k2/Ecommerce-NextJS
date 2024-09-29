@@ -20,7 +20,6 @@ export async function POST(req) {
   const { error } = schema.validate({ email, password });
 
   if (error) {
-    console.log(error);
     return NextResponse.json({
       success: false,
       message: error.details[0].message,
@@ -40,7 +39,7 @@ export async function POST(req) {
     if (!checkPassword) {
       return NextResponse.json({
         success: false,
-        message: "Incorrect password. Please try again",
+        message: "Incorrect password. Please try again !",
       });
     }
 
@@ -53,6 +52,7 @@ export async function POST(req) {
       "default_secret_key",
       { expiresIn: "1d" }
     );
+    console.log('token loginning:', token);    
 
     const finalData = {
       token,
@@ -74,7 +74,7 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: false,
-      message: "Something went wrong ! Please try again later (login)",
+      message: "Something went wrong ! Please try again later",
     });
   }
 }

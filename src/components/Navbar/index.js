@@ -6,6 +6,7 @@ import { Fragment, useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
+import CartModal from "../CartModal";
 
 function NavItems({ isModalView = false, isAdminView, router }) {
   return (
@@ -54,6 +55,8 @@ export default function Navbar() {
     setIsAuthUser,
     currentUpdatedProduct,
     setCurrentUpdatedProduct,
+    showCartModal,
+    setShowCartModal
   } = useContext(GlobalContext);
 
   const pathName = usePathname();
@@ -105,6 +108,7 @@ export default function Navbar() {
                   className={
                     "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
                   }
+                  onClick={() => setShowCartModal(true)}
                 >
                   Cart
                 </button>
@@ -189,6 +193,7 @@ export default function Navbar() {
         show={showNavModal}
         setShow={setShowNavModal}
       />
+      {showCartModal && <CartModal/>}
     </>
   );
 }

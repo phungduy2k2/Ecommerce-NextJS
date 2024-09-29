@@ -7,16 +7,19 @@ export const GlobalContext = createContext(null);
 
 export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
-  const [pageLevelLoader, setPageLevelLoader] = useState(false);
+  const [pageLevelLoader, setPageLevelLoader] = useState(true);
   const [componentLevelLoader, setComponentLevelLoader] = useState({loading : false, id : ''});
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const [cartItems, setCartItems] = useState([])
 
   useEffect(() => {
-    console.log(Cookies.get('token'));
+    console.log('cookies.get(token) context:',Cookies.get('token'));
 
-    if(Cookies.get('token') !== undefined){
+    // if(Cookies.get('token') !== undefined){
+    if(true){
       setIsAuthUser(true);
       const userData = JSON.parse(localStorage.getItem('user')) || {};
       setUser(userData)
@@ -39,7 +42,11 @@ export default function GlobalState({ children }) {
         componentLevelLoader,
         setComponentLevelLoader,
         currentUpdatedProduct,
-        setCurrentUpdatedProduct
+        setCurrentUpdatedProduct,
+        showCartModal,
+        setShowCartModal,
+        cartItems,
+        setCartItems
       }}
     >
       {children}

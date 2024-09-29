@@ -1,9 +1,39 @@
 "use client";
 
+import { GlobalContext } from "@/context";
+import { addToCart } from "@/services/cart";
+import { useContext } from "react";
+import { toast } from "react-toastify";
+import ComponentLevelLoader from "../Loader/componentlevel";
+import Notification from "../Notification";
+
 export default function CommonDetails({ item }) {
+  const {
+    user,
+    componentLevelLoader,
+    setComponentLevelLoader,
+    setShowCartModal,
+  } = useContext(GlobalContext);
 
+  async function handleAddToCart(getItem) {
+    setComponentLevelLoader({ loading: true, id: "" });
 
+    const res = await addToCart({ productID: getItem._id, userID: user._id });
 
+    if (res.success) {
+      toast.success(res.message, {
+        position: "top-right",
+      });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    } else {
+      toast.error(res.message, {
+        position: "top-right",
+      });
+      setComponentLevelLoader({ loading: false, id: "" });
+      setShowCartModal(true);
+    }
+  }
 
   return (
     <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -61,15 +91,29 @@ export default function CommonDetails({ item }) {
                 </h1>
                 {item.onSale === "yes" ? (
                   <h1 className="text-3xl font-bold text-red-700">
-                    {`$${(item.price - item.price * (item.priceDrop / 100)).toFixed(2)}`}
+                    {`$${(
+                      item.price -
+                      item.price * (item.priceDrop / 100)
+                    ).toFixed(2)}`}
                   </h1>
                 ) : null}
               </div>
               <button
                 type="button"
+                onClick={() => handleAddToCart(item)}
                 className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white"
               >
-                Add to Cart
+                {componentLevelLoader && componentLevelLoader.loading ? (
+                  <ComponentLevelLoader
+                    text={"Adding to Cart"}
+                    color={"#ffffff"}
+                    loading={
+                      componentLevelLoader && componentLevelLoader.loading
+                    }
+                  />
+                ) : (
+                  "Add to Cart"
+                )}
               </button>
             </div>
             <ul className="mt-8 space-y-2">
@@ -98,7 +142,7 @@ export default function CommonDetails({ item }) {
           </div>
         </div>
       </div>
-
+      <Notification/>
     </section>
   );
 }

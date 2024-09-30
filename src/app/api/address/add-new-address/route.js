@@ -19,9 +19,9 @@ export async function POST(req) {
   try {
     await connectToDB();
 
-    const isAuthUser = await AuthUser(req);
+    // const isAuthUser = await AuthUser(req);
 
-    if (isAuthUser) {
+    // if (isAuthUser) {
       const data = await req.json();
 
       const { fullName, address, city, country, postalCode, userID } = data;
@@ -55,12 +55,12 @@ export async function POST(req) {
           message: "Failed to add an address! Please try again",
         });
       }
-    } else {
-      return NextResponse.json({
-        success: false,
-        message: "You are not authenticated",
-      });
-    }
+    // } else {
+    //   return NextResponse.json({
+    //     success: false,
+    //     message: "You are not authenticated",
+    //   });
+    // }
   } catch (e) {
     console.log(e);
     return NextResponse.json({

@@ -5,6 +5,15 @@ import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null);
 
+export const initialCheckoutFormData = {
+  shippingAddress: {},
+  paymentMethod: "",
+  totalPrice: 0,
+  isPaid: false,
+  paidAt: new Date(),
+  isProcessing: true,
+};
+
 export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
   const [pageLevelLoader, setPageLevelLoader] = useState(true);
@@ -13,7 +22,16 @@ export default function GlobalState({ children }) {
   const [user, setUser] = useState(null);
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
   const [showCartModal, setShowCartModal] = useState(false);
-  const [cartItems, setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [addressFormData, setAddressFormData] = useState({
+    fullName: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    address: "",
+  });
+  const [checkoutFormData, setCheckoutFormData] = useState(initialCheckoutFormData);
 
   useEffect(() => {
     console.log('cookies.get(token) context:',Cookies.get('token'));
@@ -46,7 +64,13 @@ export default function GlobalState({ children }) {
         showCartModal,
         setShowCartModal,
         cartItems,
-        setCartItems
+        setCartItems,
+        addresses,
+        setAddresses,
+        addressFormData,
+        setAddressFormData,
+        checkoutFormData,
+        setCheckoutFormData,
       }}
     >
       {children}

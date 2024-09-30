@@ -8,12 +8,11 @@ export const dynamic = "force-dynamic";
 export async function PUT(req) {
   try {
     await connectToDB();
+    // const isAuthUser = await AuthUser();
 
-    const isAuthUser = await AuthUser();
-
-    if (isAuthUser) {
+    // if (isAuthUser) {
       const data = await req.json();
-      const { _id, fullName, city, country, postalCode } = data;
+      const { _id, fullName, city, address, country, postalCode } = data;
 
       const updateAddress = await Address.findOneAndUpdate(
         { _id: _id },
@@ -32,12 +31,12 @@ export async function PUT(req) {
           message: "Failed to update address ! Please try again",
         });
       }
-    } else {
-      return NextResponse.json({
-        success: false,
-        message: "You are not authenticated",
-      });
-    }
+    // } else {
+    //   return NextResponse.json({
+    //     success: false,
+    //     message: "You are not authenticated",
+    //   });
+    // }
   } catch (e) {
     console.log(e);
     return NextResponse.json({
